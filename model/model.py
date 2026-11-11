@@ -1,5 +1,6 @@
 from database.distributore_DAO import DistributoreDAO
 from database.prezzo_DAO import PrezzoDAO
+from model.distributore_DTO import Distributore
 
 '''
     MODELLO:
@@ -67,18 +68,25 @@ class Model:
     def __ricorsione(self, sequenza_parziale, giorno, ultimo_distributore, costo_corrente, prezzi_settimana):
         """ Implementa la ricorsione """
         # TODO
-        if giorno == 7:
-
-            self.__sequenza_ottima = sequenza_parziale
-            self.__costo_ottimo = costo_corrente
-            ...
-            return self.__sequenza_ottima , self.__costo_ottimo
+        if giorno == 8:
+            if self.__costo_ottimo == -1 or self.__costo_ottimo < costo_corrente:
+                self.__costo_ottimo = costo_corrente
+                self.__sequenza_ottima = sequenza_parziale
 
         else:
+            for distributore in self._distributori:
+                prezzo = prezzi_settimana[distributore][giorno - 1]
+                nuovo_costo = costo_corrente + prezzo * 100
+                if distributore!= ultimo_distributore:
+                    nuovo_costo += 5
+
+                nuova_sequenza = sequenza_parziale + [distributore]
+                giorno += 1
+                self.__ricorsione(self, nuova_sequenza, giorno, distributore, costo_corrente, prezzi_settimana)
 
 
 
-            pass
+
 
     def __get_prezzi_prima_settimana_mese(self, mese: int):
         """
