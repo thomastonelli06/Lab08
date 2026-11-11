@@ -1,4 +1,5 @@
 from database.distributore_DAO import DistributoreDAO
+from database.prezzo_DAO import PrezzoDAO
 
 '''
     MODELLO:
@@ -26,6 +27,25 @@ class Model:
         :return: lista di tuple --> (nome del distributore, media), es. (Distributore A, 1.789)
         """
         # TODO
+        lista_tuple = []
+        for distributore in self._distributori:
+            #estraggo lista_prezzi per il mese scelto
+
+            lista_prezzi = PrezzoDAO.get_prezzi(distributore.id)
+            counter = 0
+            somma = 0
+            #per ogni record prezzo della benzina giornata per quel distrib.
+            for oggetto_prezzo in lista_prezzi:
+                if oggetto_prezzo.data.month == mese:
+                    counter += 1
+                    somma += oggetto_prezzo.prezzo_litro
+
+            media = somma / counter
+            lista_tuple.append((distributore.nome, media))
+
+        return lista_tuple
+
+
 
     def get_sequenza_ottima(self, mese:int):
         """
@@ -47,6 +67,18 @@ class Model:
     def __ricorsione(self, sequenza_parziale, giorno, ultimo_distributore, costo_corrente, prezzi_settimana):
         """ Implementa la ricorsione """
         # TODO
+        if giorno == 7:
+
+            self.__sequenza_ottima = sequenza_parziale
+            self.__costo_ottimo = costo_corrente
+            ...
+            return self.__sequenza_ottima , self.__costo_ottimo
+
+        else:
+
+
+
+            pass
 
     def __get_prezzi_prima_settimana_mese(self, mese: int):
         """
@@ -54,3 +86,17 @@ class Model:
         :return: un dizionario: {id_distributore: [prezzo_giorno1, ..., prezzo_giorno7]}
         """
         # TODO
+        distributori = DistributoreDAO.get_distributori()
+        dict_prezzi_distributore = {}
+        for distributore in distributori:
+
+            lista_prezzi = distributore.get_prezzi()
+
+            for oggetto_prezzo in lista_prezzi:
+                if oggetto_prezzo.data.month == mese and 1 <= oggetto_prezzo.data.day <= 7:
+                            if distributore.id not in dict_prezzi_distributore.keys():
+                                dict_prezzi_distributore[distributore.id] = []
+                            dict_prezzi_distributore[distributore.id].append(oggetto_prezzo.prezzo_litro)
+
+
+        return dict_prezzi_distributore

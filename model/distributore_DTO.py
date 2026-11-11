@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+
+from database import prezzo_DAO
 from database.prezzo_DAO import PrezzoDAO
 
 '''
@@ -17,6 +19,9 @@ class Distributore:
     def get_prezzi(self):
         """ Aggiorna e Restituisce la lista di prezzi (self.lista_prezzi) associati al distributore"""
         # TODO
+        self.lista_prezzi = PrezzoDAO.get_prezzi(self.id)
+        return self.lista_prezzi
+
 
     def __eq__(self, other):
         return isinstance(other, Distributore) and self.id == other.id
