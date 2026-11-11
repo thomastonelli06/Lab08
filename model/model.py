@@ -83,8 +83,7 @@ class Model:
                     nuovo_costo += 5
 
                 nuova_sequenza = sequenza_parziale + [distributore.id]
-                giorno += 1
-                self.__ricorsione(nuova_sequenza, giorno , distributore.id, nuovo_costo, prezzi_settimana)
+                self.__ricorsione(nuova_sequenza, giorno + 1, distributore.id, nuovo_costo, prezzi_settimana)
 
 
 
